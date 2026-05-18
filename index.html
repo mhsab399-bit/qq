@@ -1,0 +1,1123 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصة الأستاذ أحمد فتحي أبو جبل التعليمية - الضرب الرأسي المطور</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow-x: auto;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 5px;
+        }
+
+        .app-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 15px 20px 10px 20px;
+            width: 100%;
+            max-width: 720px;
+            min-height: 95vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* تأثير لمعان النص الذهبي للعلامة المائية */
+        @keyframes goldGlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* 🌟 نظام العلامة المائية الذهبية اللامعة المشترك لجميع الصفحات */
+        .gold-watermark-bg {
+            position: relative;
+        }
+        
+        .gold-watermark-bg::before {
+            content: "الأستاذ أحمد فتحي أبو جبل   الأستاذ أحمد فتحي أبو جبل   الأستاذ أحمد فتحي أبو جبل\A الأستاذ أحمد فتحي أبو جبل   الأستاذ أحمد فتحي أبو جبل   الأستاذ أحمد فتحي أبو جبل\A الأستاذ أحمد فتحي أبو جبل   الأستاذ أحمد فتحي أبو جبل   الأستاذ أحمد فتحي أبو جبل\A الأستاذ أحمد فتحي أبو جبل   الأستاذ أحمد فتحي أبو جبل   الأستاذ أحمد فتحي أبو جبل";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-25deg);
+            width: 160%;
+            font-size: 26px;
+            font-weight: 900;
+            line-height: 3;
+            text-align: center;
+            white-space: pre-line;
+            pointer-events: none;
+            z-index: 1;
+            background: linear-gradient(90deg, #d4af37, #f3e5ab, #aa771c, #f3e5ab, #d4af37);
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            opacity: 0.13; 
+            animation: goldGlow 8s ease infinite;
+        }
+
+        /* شاشة اختيار الواجهة واللغة */
+        #welcome-screen {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            flex-grow: 1;
+            z-index: 10;
+            padding: 20px;
+        }
+
+        .welcome-title {
+            font-size: 30px;
+            color: #333;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .welcome-subtitle {
+            font-size: 22px;
+            color: #764ba2;
+            font-weight: bold;
+            margin-bottom: 35px;
+        }
+
+        .lang-buttons-container {
+            display: flex;
+            gap: 20px;
+            width: 100%;
+            max-width: 520px;
+        }
+
+        .lang-btn {
+            flex: 1;
+            padding: 20px 15px;
+            font-size: 20px;
+            font-weight: bold;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            touch-action: manipulation;
+        }
+
+        .lang-btn-ar { background: linear-gradient(135deg, #27ae60, #2ecc71); color: white; }
+        .lang-btn-en { background: linear-gradient(135deg, #2980b9, #3498db); color: white; }
+
+        .lang-btn:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 15px 25px rgba(0,0,0,0.15);
+        }
+
+        .lang-icon { font-size: 38px; }
+
+        .header {
+            text-align: center;
+            margin-bottom: 5px;
+            position: relative;
+            z-index: 5;
+        }
+
+        .header h1 {
+            color: #333;
+            font-size: 28px;
+            margin-bottom: 2px;
+            font-weight: bold;
+        }
+
+        .question-number {
+            color: #666;
+            font-size: 17px;
+        }
+
+        .problem-container {
+            background: rgba(248, 249, 250, 0.85); 
+            border-radius: 15px;
+            padding: 10px 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-grow: 1;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* مصفوفة ثابتة RTL ليبقى الآحاد دائماً جهة اليمين في النظامين */
+        .math-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 75px) 40px; 
+            row-gap: 8px;
+            column-gap: 10px; 
+            align-items: center;
+            justify-items: center;
+            position: relative;
+            z-index: 2; 
+            direction: rtl !important;
+        }
+
+        .box {
+            width: 75px;
+            height: 75px;
+            border: 4px solid #333;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            font-weight: bold;
+            background: white;
+            color: #333;
+            position: relative;
+            transition: all 0.2s ease;
+        }
+
+        .box.hidden-box {
+            visibility: hidden !important;
+            pointer-events: none;
+            border: none;
+            background: transparent;
+        }
+
+        .box.u-col-0 { border-color: #e74c3c; background: rgba(250, 219, 216, 0.9); }
+        .box.u-col-1 { border-color: #27ae60; background: rgba(213, 244, 230, 0.9); }
+        .box.u-col-2 { border-color: #3498db; background: rgba(214, 234, 248, 0.9); }
+        .box.u-col-3 { border-color: #f39c12; background: rgba(253, 235, 208, 0.9); }
+        .box.u-col-4 { border-color: #9b59b6; background: rgba(235, 222, 240, 0.9); }
+
+        .box.fixed-zero { border-color: #e74c3c; background: #f5b7b1; color: #c0392b; }
+        .box.carry-box { border: 3px dashed #ff6b6b; background: #ffe0e0; color: #c0392b; }
+
+        .box input {
+            width: 100%;
+            height: 100%;
+            border: none;
+            background: transparent;
+            text-align: center;
+            font-size: 32px;
+            font-weight: bold;
+            color: #333;
+            outline: none;
+        }
+
+        .box input:focus {
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 8px;
+        }
+
+        @keyframes attentionRotate {
+            0% { transform: rotate(0deg) scale(1.05); }
+            25% { transform: rotate(10deg) scale(1.05); background-color: #fef9c3 !important; }
+            75% { transform: rotate(-10deg) scale(1.05); background-color: #fef9c3 !important; }
+            100% { transform: rotate(0deg) scale(1.05); }
+        }
+
+        .attention-active {
+            animation: attentionRotate 0.6s ease-in-out infinite !important;
+            box-shadow: 0 0 15px rgba(234, 179, 8, 0.6) !important;
+            border-color: #eab308 !important;
+            z-index: 10;
+        }
+
+        .sign {
+            font-size: 38px;
+            font-weight: bold;
+            color: #333;
+            grid-column: 6;
+            justify-self: start; 
+            margin-right: -5px; 
+            position: relative;
+            z-index: 3;
+        }
+
+        .grid-line {
+            grid-column: 1 / span 6;
+            height: 4px;
+            background: #333;
+            width: 100%;
+            border-radius: 3px;
+            margin: 1px 0;
+            position: relative;
+            z-index: 3;
+        }
+
+        .overlay-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none; 
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+            z-index: 200;
+            overflow: hidden;
+        }
+
+        #error-screen { background: rgba(255, 245, 245, 0.97); }
+        #success-screen { background: rgba(240, 253, 244, 0.97); }
+        #report-screen { background: rgba(243, 244, 246, 0.98); }
+
+        .screen-title {
+            font-size: 30px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 5;
+        }
+
+        .error-title { color: #c0392b; }
+        .success-title { color: #16a34a; }
+        .report-title { color: #2c3e50; margin-bottom: 25px; }
+
+        .explanation-container {
+            background: rgba(255, 255, 255, 0.9);
+            border: 3px solid #f1c40f;
+            border-radius: 15px;
+            padding: 20px;
+            width: 100%;
+            max-width: 620px;
+            text-align: right;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            font-size: 20px;
+            line-height: 1.8;
+            color: #333;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 5;
+        }
+
+        .explanation-container span.highlight {
+            font-weight: bold;
+            padding: 2px 8px;
+            border-radius: 6px;
+        }
+
+        /* تصميم كرت تقرير الأداء النهائي المطور */
+        .report-card {
+            background: white;
+            border-radius: 18px;
+            padding: 25px;
+            width: 100%;
+            max-width: 520px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.08);
+            margin-bottom: 30px;
+            text-align: right;
+            border: 2px solid #e2e8f0;
+            z-index: 5;
+        }
+        
+        .report-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 21px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px dashed #e2e8f0;
+        }
+        .report-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+        .report-label { color: #4a5568; font-weight: 600; }
+        .report-value { font-weight: 800; font-size: 24px; }
+
+        .success-badge {
+            font-size: 70px;
+            margin-bottom: 10px;
+            animation: bounce 1s infinite alternate;
+            position: relative;
+            z-index: 5;
+        }
+
+        @keyframes bounce {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-15px); }
+        }
+
+        .success-msg-text {
+            font-size: 24px;
+            color: #1e3a8a;
+            font-weight: bold;
+            margin-bottom: 25px;
+            background: rgba(219, 234, 254, 0.9);
+            padding: 12px 25px;
+            border-radius: 12px;
+            border: 2px dashed #3b82f6;
+            position: relative;
+            z-index: 5;
+        }
+
+        .custom-keyboard {
+            background: #e2e8f0;
+            padding: 8px;
+            border-radius: 0px 0px 14px 14px; 
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-top: -5px; 
+            margin-bottom: 10px; 
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
+            position: relative;
+            z-index: 5;
+        }
+
+        .keyboard-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 6px;
+            width: 100%;
+        }
+
+        .key-btn {
+            flex: 1;
+            height: 52px; 
+            background: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 26px;
+            font-weight: bold;
+            color: #333;
+            cursor: pointer;
+            box-shadow: 0 3px 0 #cbd5e1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: manipulation;
+        }
+
+        .key-btn:active {
+            transform: translateY(2px);
+            box-shadow: 0 1px 0 #cbd5e1;
+            background: #f1f5f9;
+        }
+
+        .key-btn.delete-btn {
+            background: #fca5a5;
+            color: #991b1b;
+            box-shadow: 0 3px 0 #f87171;
+            font-size: 18px;
+            flex: 1.5; 
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-bottom: 5px;
+            position: relative;
+            z-index: 5;
+        }
+
+        .action-btn {
+            padding: 10px 35px;
+            font-size: 18px;
+            font-weight: bold;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            position: relative;
+            z-index: 5;
+            touch-action: manipulation;
+        }
+
+        .btn-retry { background: #e74c3c; color: white; }
+        .btn-retry:hover { background: #c0392b; }
+
+        .btn-next { background: #27ae60; color: white; }
+        .btn-next:hover { background: #229954; }
+        .btn-report-restart { background: #764ba2; color: white; padding: 12px 45px; font-size: 20px; }
+
+        /* 📱 تحسينات التوافق الكامل والمطلق مع أجهزة آيفون وجميع الشاشات الاستجابية */
+        @media (max-width: 650px) {
+            .app-container { padding: 10px 10px 5px 10px; }
+            .welcome-title { font-size: 22px; }
+            .welcome-subtitle { font-size: 18px; }
+            .lang-buttons-container { flex-direction: column; gap: 12px; }
+            .lang-btn { padding: 15px; font-size: 18px; }
+            .lang-icon { font-size: 30px; }
+            .math-grid {
+                grid-template-columns: repeat(5, 46px) 25px;
+                row-gap: 5px;
+                column-gap: 4px;
+            }
+            .box {
+                width: 46px;
+                height: 46px;
+                font-size: 20px;
+                border-width: 2.5px;
+                border-radius: 6px;
+            }
+            .gold-watermark-bg::before {
+                font-size: 18px;
+                line-height: 2.6;
+                width: 180%;
+            }
+            .box input { font-size: 20px; }
+            .sign { font-size: 20px; margin-right: -1px; }
+            .key-btn { height: 44px; font-size: 18px; }
+            .key-btn.delete-btn { font-size: 14px; }
+            .action-btn { padding: 8px 16px; font-size: 14px; }
+            .explanation-container { font-size: 15px; padding: 10px; }
+            .screen-title { font-size: 20px; }
+            .success-msg-text { font-size: 16px; }
+            .report-card { padding: 15px; }
+            .report-item { font-size: 17px; }
+            .report-value { font-size: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        
+        <div id="welcome-screen" class="gold-watermark-bg">
+            <div class="welcome-title">مرحباً بك في منصة الضرب التعليمية</div>
+            <div class="welcome-subtitle">الأستاذ أحمد فتحي أبو جبل</div>
+            <div class="lang-buttons-container">
+                <button class="lang-btn lang-btn-ar" onclick="selectLanguage('ar')">
+                    <span class="lang-icon">🇸🇦</span>
+                    <span>الدخول باللغة العربية</span>
+                    <span style="font-size: 13px; font-weight: normal; opacity: 0.9;">(الأرقام الهندية: ١ ٢ ٣)</span>
+                </button>
+                <button class="lang-btn lang-btn-en" onclick="selectLanguage('en')">
+                    <span class="lang-icon">🇬🇧</span>
+                    <span>English Platform</span>
+                    <span style="font-size: 13px; font-weight: normal; opacity: 0.9;">(English Digits: 1 2 3)</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="overlay-screen gold-watermark-bg" id="error-screen">
+            <div class="screen-title error-title" id="error-title-text">ركّز يا بطل.. تعلّم طريقة الحل الصحيحة:</div>
+            <div class="explanation-container" id="explanation-text"></div>
+            <button class="action-btn btn-retry" id="error-retry-btn" onclick="retryQuestion()">أنا مستعد لإعادة المحاولة 💪</button>
+        </div>
+
+        <div class="overlay-screen gold-watermark-bg" id="success-screen">
+            <div class="success-badge">🏆⭐</div>
+            <div class="screen-title success-title" id="success-title-text">رائع جداً يا ذكي!</div>
+            <div class="success-msg-text" id="success-msg-text">أحسنت إجابة ممتازة وتقدم ملحوظ 🌟</div>
+            <button class="action-btn btn-next" id="success-next-btn" onclick="nextQuestion()">المسألة التالية 🚀</button>
+        </div>
+
+        <div class="overlay-screen gold-watermark-bg" id="report-screen">
+            <div class="success-badge">📊⭐</div>
+            <h2 class="screen-title report-title" id="report-screen-title">تقرير الأداء النهائي</h2>
+            <div id="report-card-container"></div>
+            <button class="action-btn btn-report-restart" id="report-restart-btn" onclick="restartQuiz()">بدء اختبار جديد 🔄</button>
+        </div>
+
+        <div class="header" id="main-header" style="display: none;">
+            <h1 id="main-title">منصة الأستاذ أحمد فتحي أبو جبل التعليمية</h1>
+            <p class="question-number" id="question-num-box">السؤال <span id="question-num">1</span> من 10</p>
+        </div>
+
+        <div class="problem-container gold-watermark-bg" id="main-problem-container" style="display: none;">
+            <div class="math-grid" id="main-math-grid"></div>
+        </div>
+
+        <div class="custom-keyboard" id="keyboard-container" style="display: none;"></div>
+
+        <div class="action-buttons" id="main-action-buttons" style="display: none;">
+            <button class="action-btn btn-retry" style="background:#95a5a6;" id="action-clear-btn" onclick="resetCurrentFields()">إعادة مسح</button>
+            <button class="action-btn btn-next" id="action-next-btn" onclick="nextQuestion()">السؤال التالي</button>
+        </div>
+    </div>
+
+    <script>
+        const arabicDigits = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
+        const englishDigits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+
+        const messages = {
+            ar: {
+                title: "منصة الأستاذ أحمد فتحي أبو جبل التعليمية",
+                errorTitle: "ركّز يا بطل.. تعلّم طريقة الحل الصحيحة:",
+                retryBtn: "أنا مستعد لإعادة المحاولة 💪",
+                successTitle: "رائع جداً يا ذكي!",
+                successMsg: "أحسنت إجابة ممتازة وتقدم ملحوظ 🌟",
+                nextQuestion: "المسألة التالية 🚀",
+                viewReport: "عرض التقرير النهائي 📊",
+                clearBtn: "إعادة مسح",
+                nextBtn: "السؤال التالي",
+                deleteBtn: "مسح ⌫",
+                reportTitle: "📊 تقرير الأداء النهائي",
+                correctLabel: "الأسئلة الصحيحة (من أول محاولة):",
+                incorrectLabel: "الأسئلة التي تطلبت تصحيحاً:",
+                scoreLabel: "النسبة المئوية النهائية:",
+                restartBtn: "بدء اختبار جديد 🔄",
+                expUnits: "• نضرب العدد العلوي كاملاً في رقم الآحاد ",
+                expTens: "• نضع صفر الحفظ يمين، ثم نضرب في رقم العشرات ",
+                expSum: "• نجمع السطرين معاً للحصول على <span class=\"highlight\" style=\"background:#d6eaf8; color:#2980b9;\">الناتج الإجمالي النهائي</span>:",
+                partial1: " (السطر الجزئي الأول)",
+                partial2: " (السطر الجزئي الثاني)"
+            },
+            en: {
+                title: "Ustadh Ahmed Fathy Abu Jabal Educational Platform",
+                errorTitle: "Focus, hero! Learn the correct way to solve:",
+                retryBtn: "I am ready to try again 💪",
+                successTitle: "Awesome, genius!",
+                successMsg: "Well done! Excellent answer and great progress 🌟",
+                nextQuestion: "Next Problem 🚀",
+                viewReport: "Show Final Report 📊",
+                clearBtn: "Clear Matrix",
+                nextBtn: "Next Question",
+                deleteBtn: "Delete ⌫",
+                reportTitle: "📊 Final Performance Report",
+                correctLabel: "Correct Questions (First Attempt):",
+                incorrectLabel: "Questions requiring corrections:",
+                scoreLabel: "Final Grade Percentage:",
+                restartBtn: "Start New Quiz 🔄",
+                expUnits: "• Multiply the top number by the units digit ",
+                expTens: "• Place the placeholder zero on the right, then multiply by the tens digit ",
+                expSum: "• Add both rows together to get the <span class=\"highlight\" style=\"background:#d6eaf8; color:#2980b9;\">Final Product</span>:",
+                partial1: " (First partial product)",
+                partial2: " (Second partial product)"
+            }
+        };
+
+        let currentLang = 'ar';
+        let currentDigits = arabicDigits;
+        
+        let currentQuestion = null;
+        let questionCount = 0;
+        let activeInput = null; 
+
+        // متغيرات تتبع درجات التقرير النهائي بدقة
+        let correctQuestionsCount = 0;
+        let incorrectQuestionsCount = 0;
+        let isCurrentQuestionWrong = false;
+
+        function toCustomStr(num) {
+            if (num === null || num === undefined) return '';
+            return num.toString().split('').map(d => {
+                let idx = englishDigits.indexOf(d);
+                return idx !== -1 ? currentDigits[idx] : d;
+            }).join('');
+        }
+
+        function selectLanguage(lang) {
+            currentLang = lang;
+            currentDigits = (lang === 'ar') ? arabicDigits : englishDigits;
+            
+            document.getElementById('welcome-screen').style.display = 'none';
+            document.getElementById('main-header').style.display = 'block';
+            document.getElementById('main-problem-container').style.display = 'flex';
+            document.getElementById('keyboard-container').style.display = 'flex';
+            document.getElementById('main-action-buttons').style.display = 'flex';
+            
+            const msg = messages[currentLang];
+            document.getElementById('main-title').textContent = msg.title;
+            document.getElementById('error-title-text').textContent = msg.errorTitle;
+            document.getElementById('error-retry-btn').textContent = msg.retryBtn;
+            document.getElementById('success-title-text').textContent = msg.successTitle;
+            document.getElementById('success-msg-text').textContent = msg.successMsg;
+            document.getElementById('action-clear-btn').textContent = msg.clearBtn;
+            document.getElementById('action-next-btn').textContent = msg.nextBtn;
+            
+            setupKeyboard();
+            resetQuizCounters();
+            generateQuestion();
+        }
+
+        function setupKeyboard() {
+            const container = document.getElementById('keyboard-container');
+            container.innerHTML = `
+                <div class="keyboard-row">
+                    <button class="key-btn" onclick="typeNumber('${currentDigits[1]}')">${currentDigits[1]}</button>
+                    <button class="key-btn" onclick="typeNumber('${currentDigits[2]}')">${currentDigits[2]}</button>
+                    <button class="key-btn" onclick="typeNumber('${currentDigits[3]}')">${currentDigits[3]}</button>
+                    <button class="key-btn" onclick="typeNumber('${currentDigits[4]}')">${currentDigits[4]}</button>
+                    <button class="key-btn" onclick="typeNumber('${currentDigits[5]}')">${currentDigits[5]}</button>
+                </div>
+                <div class="keyboard-row">
+                    <button class="key-btn" onclick="typeNumber('${currentDigits[6]}')">${currentDigits[6]}</button>
+                    <button class="key-btn" onclick="typeNumber('${currentDigits[7]}')">${currentDigits[7]}</button>
+                    <button class="key-btn" onclick="typeNumber('${currentDigits[8]}')">${currentDigits[8]}</button>
+                    <button class="key-btn" onclick="typeNumber('${currentDigits[9]}')">${currentDigits[9]}</button>
+                    <button class="key-btn" onclick="typeNumber('${currentDigits[0]}')">${currentDigits[0]}</button>
+                    <button class="key-btn delete-btn" onclick="typeDelete()">${messages[currentLang].deleteBtn}</button>
+                </div>
+            `;
+        }
+
+        function playErrorSound() {
+            try {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const playBeep = (delay) => {
+                    const oscillator = audioContext.createOscillator();
+                    const gainNode = audioContext.createGain();
+                    oscillator.connect(gainNode);
+                    gainNode.connect(audioContext.destination);
+                    oscillator.frequency.value = 220; 
+                    oscillator.type = 'sawtooth';     
+                    gainNode.gain.setValueAtTime(0.2, audioContext.currentTime + delay);
+                    gainNode.gain.setValueAtTime(0, audioContext.currentTime + delay + 0.08); 
+                    oscillator.start(audioContext.currentTime + delay);
+                    oscillator.stop(audioContext.currentTime + delay + 0.1);
+                };
+                playBeep(0); playBeep(0.15); playBeep(0.3);
+            } catch(e) { console.log("Audio error"); }
+        }
+
+        function resetQuizCounters() {
+            questionCount = 0;
+            correctQuestionsCount = 0;
+            incorrectQuestionsCount = 0;
+            document.getElementById('report-screen').style.display = 'none';
+        }
+
+        function generateQuestion() {
+            activeInput = null;
+            isCurrentQuestionWrong = false;
+            document.getElementById('error-screen').style.display = 'none';
+            document.getElementById('success-screen').style.display = 'none';
+
+            if (questionCount >= 10) {
+                showFinalReportScreen();
+                return;
+            }
+
+            const num1 = Math.floor(Math.random() * 900) + 100; 
+            const num2 = Math.floor(Math.random() * 90) + 10;   
+
+            const unitsDigit = num2 % 10;
+            const tensDigit = Math.floor(num2 / 10);
+
+            const firstProduct = num1 * unitsDigit;
+            const secondProduct = num1 * tensDigit * 10; 
+            const finalAnswer = num1 * num2;
+
+            const digitsN1 = num1.toString().split('').map(Number);
+            
+            const carryTens1 = Math.floor((digitsN1[2] * unitsDigit) / 10) > 0;
+            const carryHundreds1 = Math.floor(((digitsN1[1] * unitsDigit) + Math.floor((digitsN1[2] * unitsDigit) / 10)) / 10) > 0;
+
+            const carryTens2 = Math.floor((digitsN1[2] * tensDigit) / 10) > 0;
+            const carryHundreds2 = Math.floor(((digitsN1[1] * tensDigit) + Math.floor((digitsN1[2] * tensDigit) / 10)) / 10) > 0;
+
+            const needCarryTens = carryTens1 || carryTens2;
+            const needCarryHundreds = carryHundreds1 || carryHundreds2;
+
+            currentQuestion = { 
+                num1, num2, unitsDigit, tensDigit, firstProduct, secondProduct, finalAnswer,
+                needCarryTens, needCarryHundreds
+            };
+            displayQuestion();
+        }
+
+        function displayQuestion() {
+            questionCount++;
+            
+            if (currentLang === 'ar') {
+                document.getElementById('question-num-box').innerHTML = `السؤال <span id="question-num">${toCustomStr(questionCount)}</span> من ${toCustomStr(10)}`;
+            } else {
+                document.getElementById('question-num-box').innerHTML = `Question <span id="question-num">${toCustomStr(questionCount)}</span> of ${toCustomStr(10)}`;
+            }
+
+            const grid = document.getElementById('main-math-grid');
+            grid.innerHTML = ''; 
+
+            const getRowArray = (num) => {
+                let str = num.toString();
+                let arr = str.split('').reverse(); 
+                while(arr.length < 5) { arr.push(' '); }
+                return arr;
+            };
+
+            const n1Arr = getRowArray(currentQuestion.num1);
+            const n2Arr = getRowArray(currentQuestion.num2);
+            const p1Arr = getRowArray(currentQuestion.firstProduct);
+            const p2Arr = getRowArray(currentQuestion.secondProduct);
+            const fArr = getRowArray(currentQuestion.finalAnswer);
+
+            // 1. صف المساعد العلوي (الحمل)
+            for(let i = 0; i < 5; i++) {
+                if (i === 1 && currentQuestion.needCarryTens) {
+                    const box = document.createElement('div');
+                    box.className = 'box carry-box';
+                    box.innerHTML = `<input type="text" class="math-input carry-inp" id="carry-tens" data-ignore="true" inputmode="none" readonly maxlength="1">`;
+                    grid.appendChild(box);
+                } else if (i === 2 && currentQuestion.needCarryHundreds) {
+                    const box = document.createElement('div');
+                    box.className = 'box carry-box';
+                    box.innerHTML = `<input type="text" class="math-input carry-inp" id="carry-hundreds" data-ignore="true" inputmode="none" readonly maxlength="1">`;
+                    grid.appendChild(box);
+                } else {
+                    grid.appendChild(createHiddenBox());
+                }
+            }
+            grid.appendChild(createEmptyDiv());
+
+            // 2. صف المضروب (العدد العلوي)
+            for(let i = 0; i < 5; i++) {
+                if(n1Arr[i] === ' ') {
+                    grid.appendChild(createHiddenBox());
+                } else {
+                    const box = document.createElement('div');
+                    box.className = `box u-col-${i}`;
+                    box.textContent = currentDigits[parseInt(n1Arr[i])];
+                    grid.appendChild(box);
+                }
+            }
+            grid.appendChild(createEmptyDiv());
+
+            // 3. صف المضروب فيه (العدد السفلي)
+            for(let i = 0; i < 5; i++) {
+                if(n2Arr[i] === ' ') {
+                    grid.appendChild(createHiddenBox());
+                } else {
+                    const box = document.createElement('div');
+                    box.className = `box u-col-${i}`;
+                    box.textContent = currentDigits[parseInt(n2Arr[i])];
+                    if(i === 0) box.id = "bottom-units-box";
+                    else if(i === 1) box.id = "bottom-tens-box";
+                    grid.appendChild(box);
+                }
+            }
+            const multSign = document.createElement('div');
+            multSign.className = 'sign';
+            multSign.textContent = '×';
+            grid.appendChild(multSign);
+
+            const line1 = document.createElement('div');
+            line1.className = 'grid-line';
+            grid.appendChild(line1);
+
+            // 4. السطر الجزئي الأول (يبدأ تلقائياً من الآحاد i=0 الموجد على اليمين تماماً)
+            for(let i = 0; i < 5; i++) {
+                if(p1Arr[i] === ' ') {
+                    grid.appendChild(createHiddenBox()); 
+                } else {
+                    const box = document.createElement('div');
+                    box.className = `box u-col-${i}`;
+                    box.innerHTML = `<input type="text" class="math-input" id="p1-${i}" inputmode="none" readonly data-type="p1" data-idx="${i}" maxlength="1">`;
+                    grid.appendChild(box);
+                }
+            }
+            grid.appendChild(createEmptyDiv());
+
+            // 5. السطر الجزئي الثاني + الصفر الثابت يميناً تماماً
+            for(let i = 0; i < 5; i++) {
+                if(p2Arr[i] === ' ') {
+                    grid.appendChild(createHiddenBox());
+                } else {
+                    const box = document.createElement('div');
+                    if(i === 0) {
+                        box.className = `box fixed-zero u-col-0`;
+                        box.textContent = currentDigits[0];
+                        box.id = "fixed-zero-box"; 
+                    } else {
+                        box.className = `box u-col-${i}`;
+                        box.innerHTML = `<input type="text" class="math-input" id="p2-${i}" inputmode="none" readonly data-type="p2" data-idx="${i}" maxlength="1">`;
+                    }
+                    grid.appendChild(box);
+                }
+            }
+            const plusSign = document.createElement('div');
+            plusSign.className = 'sign';
+            plusSign.textContent = '+';
+            grid.appendChild(plusSign);
+
+            const line2 = document.createElement('div');
+            line2.className = 'grid-line';
+            grid.appendChild(line2);
+
+            // 6. صف الناتج الإجمالي النهائي
+            for(let i = 0; i < 5; i++) {
+                if(fArr[i] === ' ') {
+                    grid.appendChild(createHiddenBox());
+                } else {
+                    const box = document.createElement('div');
+                    box.className = `box u-col-${i}`;
+                    box.innerHTML = `<input type="text" class="math-input" id="final-${i}" inputmode="none" readonly data-type="final" data-idx="${i}" maxlength="1">`;
+                    grid.appendChild(box);
+                }
+            }
+            grid.appendChild(createEmptyDiv());
+
+            setupInputController();
+            updateVisualAttention();
+        }
+
+        function createEmptyDiv() { return document.createElement('div'); }
+        function createHiddenBox() {
+            const div = document.createElement('div');
+            div.className = 'box hidden-box';
+            return div;
+        }
+
+        function setupInputController() {
+            const allInputs = document.querySelectorAll('.math-input');
+            allInputs.forEach((input) => {
+                input.addEventListener('focus', function() {
+                    activeInput = input;
+                });
+            });
+
+            const firstInput = document.getElementById('p1-0');
+            if (firstInput) {
+                firstInput.focus();
+                activeInput = firstInput;
+            }
+        }
+
+        function updateVisualAttention() {
+            const unitsBox = document.getElementById('bottom-units-box');
+            const tensBox = document.getElementById('bottom-tens-box');
+            const zeroBox = document.getElementById('fixed-zero-box');
+            if (!unitsBox || !tensBox) return;
+
+            let isP1Complete = true;
+            const p1Inputs = document.querySelectorAll('input[data-type="p1"]');
+            p1Inputs.forEach(inp => { 
+                if (inp.value.trim() === '') isP1Complete = false; 
+            });
+
+            if (!isP1Complete) {
+                unitsBox.classList.add('attention-active');
+                tensBox.classList.remove('attention-active');
+                if(zeroBox) zeroBox.classList.remove('attention-active');
+            } else {
+                unitsBox.classList.remove('attention-active');
+                tensBox.classList.add('attention-active');
+                if(zeroBox) zeroBox.classList.add('attention-active');
+            }
+        }
+
+        function typeNumber(num) {
+            if (!activeInput) {
+                const firstInput = document.getElementById('p1-0');
+                if (firstInput) {
+                    firstInput.focus();
+                    activeInput = firstInput;
+                } else {
+                    return;
+                }
+            }
+
+            activeInput.value = num;
+            
+            const inputs = Array.from(document.querySelectorAll('.math-input'));
+            const currentIndex = inputs.indexOf(activeInput);
+            
+            let nextInput = inputs[currentIndex + 1];
+            while (nextInput && nextInput.hasAttribute('data-ignore')) {
+                nextInput = inputs[inputs.indexOf(nextInput) + 1];
+            }
+            
+            if (nextInput) {
+                nextInput.focus();
+                activeInput = nextInput;
+            }
+            
+            updateVisualAttention();
+            validateCurrentMatrix();
+        }
+
+        function typeDelete() {
+            if (!activeInput) return;
+
+            if (activeInput.value !== '') {
+                activeInput.value = '';
+            } else {
+                const inputs = Array.from(document.querySelectorAll('.math-input'));
+                const currentIndex = inputs.indexOf(activeInput);
+                
+                let prevInput = inputs[currentIndex - 1];
+                while (prevInput && prevInput.hasAttribute('data-ignore')) {
+                    prevInput = inputs[inputs.indexOf(prevInput) - 1];
+                }
+                
+                if (prevInput) {
+                    prevInput.focus();
+                    activeInput = prevInput;
+                    activeInput.value = '';
+                }
+            }
+            
+            updateVisualAttention();
+            validateCurrentMatrix();
+        }
+
+        function collectRowValue(type) {
+            let numStr = '';
+            for(let i=0; i<5; i++) {
+                const inp = document.getElementById(`${type}-${i}`);
+                if(inp) {
+                    if(inp.value === '') return null; 
+                    const engDigit = englishDigits[currentDigits.indexOf(inp.value)];
+                    numStr = engDigit + numStr; 
+                } else {
+                    if(type === 'p2' && i === 0) { numStr = '0' + numStr; }
+                }
+            }
+            return numStr === '' ? null : parseInt(numStr);
+        }
+
+        function validateCurrentMatrix() {
+            const p1Val = collectRowValue('p1');
+            const p2Val = collectRowValue('p2');
+            const finalVal = collectRowValue('final');
+
+            if (p1Val !== null && p2Val !== null && finalVal !== null) {
+                const unitsBox = document.getElementById('bottom-units-box');
+                const tensBox = document.getElementById('bottom-tens-box');
+                const zeroBox = document.getElementById('fixed-zero-box');
+                if(unitsBox) unitsBox.classList.remove('attention-active');
+                if(tensBox) tensBox.classList.remove('attention-active');
+                if(zeroBox) zeroBox.classList.remove('attention-active');
+
+                if (p1Val === currentQuestion.firstProduct &&
+                    p2Val === currentQuestion.secondProduct &&
+                    finalVal === currentQuestion.finalAnswer) {
+
+                    // إذا أجاب بشكل صحيح تماماً
+                    if (!isCurrentQuestionWrong) {
+                        correctQuestionsCount++;
+                    } else {
+                        incorrectQuestionsCount++;
+                    }
+
+                    // تحديث نص زر الانتقال في السؤال الأخير ليقود إلى كرت النتيجة
+                    const nextBtn = document.getElementById('success-next-btn');
+                    if (questionCount >= 10) {
+                        nextBtn.textContent = messages[currentLang].viewReport;
+                    } else {
+                        nextBtn.textContent = messages[currentLang].nextQuestion;
+                    }
+
+                    document.getElementById('success-screen').style.display = 'flex';
+                } else {
+                    // تسجيل وجود خطأ للمحاولة الحالية لتضمينها في كرت التقرير
+                    isCurrentQuestionWrong = true;
+
+                    const errorScreen = document.getElementById('error-screen');
+                    const expText = document.getElementById('explanation-text');
+                    const msg = messages[currentLang];
+                    
+                    const n1 = toCustomStr(currentQuestion.num1);
+                    const uDig = toCustomStr(currentQuestion.unitsDigit);
+                    const tDig = toCustomStr(currentQuestion.tensDigit);
+                    const p1 = toCustomStr(currentQuestion.firstProduct);
+                    const p2 = toCustomStr(currentQuestion.secondProduct);
+                    const fin = toCustomStr(currentQuestion.finalAnswer);
+                    const zeroGlyph = currentDigits[0];
+
+                    expText.innerHTML = `
+                        ${msg.expUnits}<span class="highlight" style="background:#fadbd8; color:#c0392b;">(${uDig})</span>:<br>
+                        &nbsp;&nbsp;&nbsp; ${n1} × ${uDig} = <span style="color:#e74c3c; font-weight:bold;">${p1}</span> ${msg.partial1}<br><br>
+                        ${msg.expTens}<span class="highlight" style="background:#d5f4e6; color:#27ae60;">(${tDig})</span>:<br>
+                        &nbsp;&nbsp;&nbsp; ${n1} × ${tDig}${zeroGlyph} = <span style="color:#27ae60; font-weight:bold;">${p2}</span> ${msg.partial2}<br><br>
+                        ${msg.expSum}<br>
+                        &nbsp;&nbsp;&nbsp; ${p1} + ${p2} = <span style="color:#3498db; font-size:26px; font-weight:bold;">${fin}</span>
+                    `;
+
+                    errorScreen.style.display = 'flex';
+                    playErrorSound();
+                }
+            }
+        }
+
+        function retryQuestion() {
+            document.getElementById('error-screen').style.display = 'none';
+            resetCurrentFields();
+        }
+
+        function resetCurrentFields() {
+            document.querySelectorAll('.math-input').forEach(inp => {
+                inp.value = '';
+            });
+            setupInputController();
+            updateVisualAttention();
+        }
+
+        function nextQuestion() {
+            generateQuestion();
+        }
+
+        // 📊 دالة بناء وعرض شاشة التقرير النهائي المطور بالكامل
+        function showFinalReportScreen() {
+            document.getElementById('success-screen').style.display = 'none';
+            document.getElementById('error-screen').style.display = 'none';
+            
+            // إخفاء العناصر الفرعية للمسألة لإبراز التقرير بالكامل
+            document.getElementById('main-header').style.display = 'none';
+            document.getElementById('main-problem-container').style.display = 'none';
+            document.getElementById('keyboard-container').style.display = 'none';
+            document.getElementById('main-action-buttons').style.display = 'none';
+
+            const scorePercentage = Math.round((correctQuestionsCount / 10) * 100);
+            const msg = messages[currentLang];
+
+            const cStr = toCustomStr(correctQuestionsCount);
+            const wStr = toCustomStr(incorrectQuestionsCount);
+            const pStr = toCustomStr(scorePercentage) + (currentLang === 'ar' ? '٪' : '%');
+
+            document.getElementById('report-screen-title').textContent = msg.reportTitle;
+            document.getElementById('report-restart-btn').textContent = msg.restartBtn;
+
+            const container = document.getElementById('report-card-container');
+            container.innerHTML = `
+                <div class="report-card">
+                    <div class="report-item">
+                        <span class="report-label">${msg.correctLabel}</span>
+                        <span class="report-value" style="color: #16a34a;">${cStr} / ${toCustomStr(10)}</span>
+                    </div>
+                    <div class="report-item">
+                        <span class="report-label">${msg.incorrectLabel}</span>
+                        <span class="report-value" style="color: #dc2626;">${wStr} / ${toCustomStr(10)}</span>
+                    </div>
+                    <div class="report-item" style="margin-top: 20px; padding-top: 15px; border-top: 2px dashed #cbd5e1;">
+                        <span class="report-label" style="font-size: 23px; color: #1e3a8a;">${msg.scoreLabel}</span>
+                        <span class="report-value" style="font-size: 30px; color: #2563eb;">${pStr}</span>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('report-screen').style.display = 'flex';
+        }
+
+        function restartQuiz() {
+            document.getElementById('report-screen').style.display = 'none';
+            
+            // إعادة العناصر المخبأة للظهور مجدداً
+            document.getElementById('main-header').style.display = 'block';
+            document.getElementById('main-problem-container').style.display = 'flex';
+            document.getElementById('keyboard-container').style.display = 'flex';
+            document.getElementById('main-action-buttons').style.display = 'flex';
+
+            resetQuizCounters();
+            generateQuestion();
+        }
+    </script>
+</body>
+</html>
