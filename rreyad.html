@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>بوابة التميز في الرياضيات | أ. أحمد فتحي</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* درجات ألوان مطابقة للصورة الفاخرة */
+            --bg-gradient-top: #422d25; /* بني دافئ عميق */
+            --bg-gradient-bottom: #1c120e; /* بني داكن جداً يقترب من الأسود */
+            --card-bg: #ffffff; /* أبيض ناصع كما في الصورة */
+            --text-main: #2b1d19; /* بني داكن جداً للنصوص */
+            --text-muted: #6d5146; /* بني متوسط للوصف */
+            --gold-accent: #b78628; /* ذهبي ملكي للخطوط والزخارف */
+            --gold-bright: #d4af37; /* ذهبي لامع للأزرار */
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Tajawal', sans-serif;
+        }
+
+        body {
+            /* كود الزخرفة المطور: يدمج النجمة الثمانية والهلال بنمط خطي ذهبي مفرغ وموزع باحترافية على كامل الخلفية */
+            background-image: 
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cg fill='none' stroke='%23b78628' stroke-width='0.6' stroke-opacity='0.25'%3E%3C!-- النجمة الإسلامية الكبيرة --%3E%3Cpath d='M40 10 l12 12 H72 v20 l12 12 l-12 12 v20 H52 l-12 12 l-12 -12 H10 v-20 l-12 -12 l12 -12 v-20 h20 z'/%3E%3Cpath d='M40 15 l9.5 9.5 H65 v21 l9.5 9.5 l-9.5 9.5 v21 H49.5 l-9.5 9.5 l-9.5 -9.5 H15 v-21 l-9.5 -9.5 l9.5 -9.5 v-21 h20 z'/%3E%3C!-- الهلال الداخلي الفخم --%3E%3Cpath d='M44 32 a 12 12 0 1 0 0 24 a 9.5 9.5 0 1 1 0 -24' fill='%23b78628' fill-opacity='0.1' stroke='none'/%3E%3C!-- زخرفة النجمة المقابلة التناظرية --%3E%3Cpath d='M120 90 l12 12 H152 v20 l12 12 l-12 12 v20 H132 l-12 12 l-12 -12 H90 v-20 l-12 -12 l12 -12 v-20 h20 z'/%3E%3Cpath d='M120 95 l9.5 9.5 H145 v21 l9.5 9.5 l-9.5 9.5 v21 H129.5 l-9.5 9.5 l-9.5 -9.5 H95 v-21 l-9.5 -9.5 l9.5 -9.5 v-21 h20 z'/%3E%3Cpath d='M124 112 a 12 12 0 1 0 0 24 a 9.5 9.5 0 1 1 0 -24' fill='%23b78628' fill-opacity='0.1' stroke='none'/%3E%3C/g%3E%3C/svg%3E"),
+                linear-gradient(135deg, var(--bg-gradient-top) 0%, var(--bg-gradient-bottom) 100%);
+            background-attachment: fixed;
+            background-size: 200px 200px, 100% 100%;
+            color: #fff;
+            min-height: 100vh;
+            padding: 40px 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* --- العلامة المائية التلقائية اللطيفة --- */
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0; }
+            10%, 90% { opacity: 0.12; }
+            50% { opacity: 0.06; }
+        }
+
+        .watermark {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-15deg);
+            font-size: min(8vw, 5rem);
+            font-weight: 700;
+            color: var(--gold-bright);
+            white-space: nowrap;
+            pointer-events: none;
+            z-index: 0;
+            animation: fadeInOut 12s infinite ease-in-out;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            width: 100%;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* رأس الصفحة (الهيدر) المطور والأنيق */
+        header {
+            text-align: center;
+            margin-bottom: 60px;
+            padding: 20px;
+        }
+
+        header h1 {
+            font-size: min(7.5vw, 3.2rem);
+            margin-bottom: 15px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            background: linear-gradient(to bottom, #ffffff, #e5c07b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0px 3px 6px rgba(0,0,0,0.4);
+        }
+
+        header p {
+            font-size: min(4vw, 1.4rem);
+            opacity: 0.85;
+            color: #dfd5d0;
+            font-weight: 400;
+        }
+
+        /* شبكة عرض البطاقات (تنسيق شبكي متجاوب ومريح للعين) */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(45%, 1fr));
+            gap: 40px;
+            padding: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .grid-container {
+                grid-template-columns: 1fr;
+                gap: 25px;
+            }
+            body {
+                padding: 20px 10px;
+            }
+        }
+
+        /* تصميم البطاقات المطابق للصورة الفاخرة */
+        .card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+            padding: 40px;
+            display: flex;
+            flex-direction: row; /* توزيع المحتوى والشعار بشكل أفقي كما بالصورة */
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease;
+            position: relative;
+            border: 1px solid rgba(183, 134, 40, 0.2);
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 45px rgba(183, 134, 40, 0.25);
+        }
+
+        .card-content {
+            flex: 1;
+            text-align: right;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+        }
+
+        .card h3 {
+            font-size: 1.6rem;
+            margin-bottom: 12px;
+            color: var(--text-main);
+            font-weight: 700;
+            position: relative;
+        }
+
+        .card p {
+            font-size: 1rem;
+            color: var(--text-muted);
+            margin-bottom: 30px;
+            line-height: 1.7;
+        }
+
+        /* النجمة والهلال المدمجة داخل البطاقة يساراً وبدقة متناهية */
+        .card-icon {
+            width: 90px;
+            height: 90px;
+            flex-shrink: 0;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 80'%3E%3Cg fill='none' stroke='%23b78628' stroke-width='1.2'%3E%3Cpath d='M40 10 l8.3 8.3H60v11.7l8.3 8.3-8.3 8.3V60H48.3L40 68.3 31.7 60H20V48.3L11.7 40l8.3-8.3V18.3h11.7z'/%3E%3Cpath d='M40 15 l6.2 6.2H55v13.8l6.2 6.2-6.2 6.2V55H46.2L40 61.2 33.8 55H25V41.2L18.8 35l6.2-6.2V15h13.8z'/%3E%3Cpath d='M43 31 a 11 11 0 1 0 0 22 a 8.5 8.5 0 1 1 0 -22' fill='%23b78628' fill-opacity='0.15' stroke='none'/%3E%3C/g%3E%3C/svg%3E");
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        /* أزرار الروابط التفاعلية الأنيقة والمطابقة للصورة */
+        .btn-link {
+            align-self: flex-start;
+            background: linear-gradient(135deg, #422d25 0%, #2b1d19 100%);
+            color: #e5c07b;
+            text-decoration: none;
+            padding: 12px 28px;
+            border-radius: 6px; /* زوايا حادة ناعمة ومطابقة تماماً للصورة */
+            font-weight: 700;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            border: 1px solid var(--gold-accent);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        }
+
+        .btn-link:hover {
+            background: linear-gradient(135deg, var(--gold-accent) 0%, #96691d 100%);
+            color: #fff;
+            box-shadow: 0 6px 20px rgba(183, 134, 40, 0.4);
+            transform: scale(1.03);
+        }
+
+        /* التذييل / الفوتر */
+        footer {
+            text-align: center;
+            margin-top: 80px;
+            padding: 25px;
+            color: #a8948d;
+            font-size: 0.95rem;
+            border-top: 1px solid rgba(183, 134, 40, 0.15);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="watermark">أحمد فتحي أبو جبل</div>
+
+    <div class="container">
+        
+        <header>
+            <h1>بوابة التميز في الرياضيات</h1>
+            <p>تحت إشراف الأستاذ: أحمد فتحي رزق أبو جبل</p>
+        </header>
+
+        <div class="grid-container">
+
+            <div class="card">
+                <div class="card-content">
+                    <h3>جدول الضرب</h3>
+                    <p>مراجعة سريعة وشاملة لكامل جداول الضرب، مصممة لقياس سرعة البديهة ودقة الحفظ.</p>
+                    <a href="https://refaalearn.com/champ-challenge/24.html" target="_blank" class="btn-link">ابدأ المراجعة الآن ←</a>
+                </div>
+                <div class="card-icon"></div>
+            </div>
+
+            <div class="card">
+                <div class="card-content">
+                    <h3>القسمة على رقم</h3>
+                    <p>تدريبات تفاعلية مركزة لتقوية مهارات القسمة الأساسية على عدد مكون من رقم واحد.</p>
+                    <a href="https://ahmdgbl-prog.github.io/math/qesma" target="_blank" class="btn-link">ابدأ التحدي الآن ←</a>
+                </div>
+                <div class="card-icon"></div>
+            </div>
+
+            <div class="card">
+                <div class="card-content">
+                    <h3>ضرب رقمين × ٣ أرقام</h3>
+                    <p>تحديات متقدمة لتطبيق خطوات الضرب المطول بدقة وسرعة للحصول على النواتج النهائية الصحيحة.</p>
+                    <a href="https://mhsab399-bit.github.io/qq/" target="_blank" class="btn-link">ابدأ الاختبار الآن ←</a>
+                </div>
+                <div class="card-icon"></div>
+            </div>
+
+            <div class="card">
+                <div class="card-content">
+                    <h3>القسمة المطولة</h3>
+                    <p>اختبار شامل لمهارات القسمة المطولة على رقم أو رقمين، مع التركيز على خطوات الحل المنهجية.</p>
+                    <a href="https://ahmdgbl-prog.github.io/inde/" target="_blank" class="btn-link">خض الاختبار الآن ←</a>
+                </div>
+                <div class="card-icon"></div>
+            </div>
+
+        </div>
+
+        <footer>
+            <p>جميع الحقوق محفوظة &copy; ٢٠٢٦ م | الحقوق الرقمية محفوظة للأستاذ أحمد فتحي أبو جبل</p>
+        </footer>
+
+    </div>
+
+</body>
+</html>
